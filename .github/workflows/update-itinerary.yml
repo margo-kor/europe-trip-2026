@@ -57,6 +57,7 @@ jobs:
               data=payload,
               headers={
                   "x-api-key": os.environ["ANTHROPIC_API_KEY"],
+                  "anthropic-workspace-id": "wrkspc_01R2v5D2maP5gqj7CgkUX25H",
                   "anthropic-version": "2023-06-01",
                   "content-type": "application/json"
               }
