@@ -320,6 +320,63 @@
     margin-top: 2px;
   }
 
+  /* Accommodation detail */
+  .accom-detail {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #f0f0f0;
+  }
+  .accom-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .accom-detail-item {
+    font-size: 12px;
+  }
+  .accom-detail-item .label {
+    color: var(--text-sub);
+    margin-bottom: 2px;
+  }
+  .accom-detail-item .value {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .accom-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 14px 0 8px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+  }
+  .accom-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .accom-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    background: #f5f5f5;
+    color: var(--text);
+  }
+  .accom-nearby-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid #f8f8f8;
+  }
+  .accom-nearby-item:last-child { border-bottom: none; }
+  .accom-nearby-dist {
+    color: var(--text-sub);
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
   /* Souvenir */
   .souv-card {
     background: #fff;
@@ -872,13 +929,60 @@
 
   <div class="accom-card">
     <span class="accom-city c-porto">포르투</span>
-    <div class="accom-name">포르투 숙소 (아고다)</div>
-    <div class="accom-addr">Rua de Fernandes Tomas, 424, Porto 4000-210</div>
+    <div class="accom-name">Casa de Cristal by Oporto Soul</div>
+    <div class="accom-addr">Rua de Fernandes Tomás, 424, Porto 4000-210</div>
     <div class="accom-meta">
-      <span>10/3 ~ 10/5 (2박)</span>
+      <span>Agoda 8.9점 (3,553건)</span>
       <span>예약번호: 1750059752</span>
     </div>
-    <div class="chips" style="margin-top:10px;">
+
+    <div class="accom-detail">
+      <div class="accom-detail-grid">
+        <div class="accom-detail-item">
+          <div class="label">체크인</div>
+          <div class="value">10/3 (토) 15:00</div>
+        </div>
+        <div class="accom-detail-item">
+          <div class="label">체크아웃</div>
+          <div class="value">10/5 (월) 11:00</div>
+        </div>
+        <div class="accom-detail-item">
+          <div class="label">객실</div>
+          <div class="value">아파트 1실 / 56m²</div>
+        </div>
+        <div class="accom-detail-item">
+          <div class="label">침대</div>
+          <div class="value">더블베드 2개</div>
+        </div>
+        <div class="accom-detail-item">
+          <div class="label">투숙객</div>
+          <div class="value">성인 4명</div>
+        </div>
+        <div class="accom-detail-item">
+          <div class="label">늦은 체크인</div>
+          <div class="value">20:00까지</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accom-section-title">객실 구비 사항</div>
+    <div class="accom-tags">
+      <span class="accom-tag">무료 Wi-Fi</span>
+      <span class="accom-tag">주방 (전자레인지)</span>
+      <span class="accom-tag">커피 & 차</span>
+      <span class="accom-tag">세탁기</span>
+      <span class="accom-tag">금연</span>
+      <span class="accom-tag">주차 가능</span>
+    </div>
+
+    <div class="accom-section-title">주변 명소</div>
+    <div class="accom-nearby-item"><span>트린다데 역 / 산타 카타리나</span><span class="accom-nearby-dist">130m</span></div>
+    <div class="accom-nearby-item"><span>라페로디대 광장</span><span class="accom-nearby-dist">540m</span></div>
+    <div class="accom-nearby-item"><span>토레 도스 클레리고스</span><span class="accom-nearby-dist">540m</span></div>
+    <div class="accom-nearby-item"><span>포르투 대성당</span><span class="accom-nearby-dist">960m</span></div>
+    <div class="accom-nearby-item"><span>카이스 다 히베이라</span><span class="accom-nearby-dist">1.16km</span></div>
+
+    <div class="chips" style="margin-top:14px;">
       <a class="chip chip-map" href="https://maps.google.com/?q=Rua+de+Fernandes+Tomas+424+Porto+4000-210" target="_blank"><span class="chip-icon">📍</span> 지도 보기</a>
     </div>
   </div>
