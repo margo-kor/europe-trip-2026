@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>이자매&강자매 유럽 여행기</title>
+<style>
+  :root {
+    --porto: #1a6b4a;
+    --porto-bg: #e8f5ee;
+    --porto-light: #2d9d6e;
+    --madrid: #c0392b;
+    --madrid-bg: #fdecea;
+    --madrid-light: #e74c3c;
+    --barcelona: #2874a6;
+    --barcelona-bg: #eaf2f8;
+    --barcelona-light: #3498db;
+    --transit: #7f8c8d;
+    --transit-bg: #f0f0f0;
+    --bg: #f5f5f0;
+    --text: #2c2c2c;
+    --text-sub: #666;
+    --card-radius: 16px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1a6b4a 0%, #c0392b 50%, #2874a6 100%);
+    color: #fff;
+    padding: 48px 20px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 24px;
+    background: var(--bg);
+    border-radius: 24px 24px 0 0;
+  }
+  .hero h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .hero .subtitle {
+    font-size: 14px;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+  .hero .dates {
+    margin-top: 12px;
+    font-size: 13px;
+    opacity: 0.7;
+    letter-spacing: 1px;
+  }
+
+  /* Tab nav */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display:none; }
+  .tab-btn {
+    flex: none;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sub);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    color: var(--text);
+    border-bottom-color: var(--text);
+  }
+
+  /* Sections */
+  .section { display: none; padding: 16px; }
+  .section.active { display: block; }
+
+  /* Day cards */
+  .day-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .day-header {
+    padding: 16px 18px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .day-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .day-badge .num { font-size: 18px; line-height: 1; }
+  .day-badge .dow { font-size: 10px; line-height: 1; margin-top: 2px; }
+  .day-info { flex: 1; }
+  .day-info .title { font-size: 16px; font-weight: 700; }
+  .day-info .city { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+  .day-toggle {
+    font-size: 18px;
+    color: #bbb;
+    transition: transform 0.3s;
+  }
+  .day-card.open .day-toggle { transform: rotate(180deg); }
+  .day-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .day-card.open .day-body { max-height: 2000px; }
+  .day-content { padding: 0 18px 18px; }
+
+  /* Timeline items */
+  .tl-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid #f0f0f0;
+  }
+  .tl-item:first-child { border-top: none; }
+  .tl-time {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sub);
+    width: 50px;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .tl-detail { flex: 1; }
+  .tl-title {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .tl-sub {
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-top: 2px;
+  }
+
+  /* Link chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .chip:active { opacity: 0.7; }
+  .chip-map {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  .chip-link {
+    background: #e3f2fd;
+    color: #1565c0;
+  }
+  .chip-booking {
+    background: #fff3e0;
+    color: #e65100;
+  }
+  .chip-icon { font-size: 13px; }
+
+  /* Accommodation cards */
+  .accom-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .accom-city {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .accom-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .accom-addr {
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-bottom: 4px;
+  }
+  .accom-meta {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+  .accom-meta span { margin-right: 12px; }
+
+  /* Transport cards */
+  .transport-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .transport-route {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .transport-city-label {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .transport-arrow {
+    color: #bbb;
+    font-size: 16px;
+  }
+  .transport-detail {
+    font-size: 12px;
+    color: var(--text-sub);
+    line-height: 1.8;
+  }
+  .transport-detail strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Checklist */
+  .check-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .check-item {
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-status {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .status-done {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  .status-pending {
+    background: #fff3e0;
+    color: #e65100;
+  }
+  .check-info { flex: 1; }
+  .check-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .check-meta {
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-top: 2px;
+  }
+
+  /* Souvenir */
+  .souv-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .souv-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .souv-place {
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-bottom: 6px;
+  }
+  .souv-desc {
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    padding-left: 2px;
+  }
+  .section-subtitle {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-sub);
+    margin: 20px 0 10px 2px;
+  }
+
+  /* Color helpers */
+  .c-porto { background: var(--porto); }
+  .c-madrid { background: var(--madrid); }
+  .c-barcelona { background: var(--barcelona); }
+  .c-transit { background: var(--transit); }
+
+  .border-porto { border-left: 4px solid var(--porto); }
+  .border-madrid { border-left: 4px solid var(--madrid); }
+  .border-barcelona { border-left: 4px solid var(--barcelona); }
+  .border-transit { border-left: 4px solid var(--transit); }
+
+  /* Responsive text */
+  @media (min-width: 480px) {
+    .section { max-width: 480px; margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>이자매&강자매 유럽 여행기</h1>
+  <div class="subtitle">Porto - Madrid - Barcelona</div>
+  <div class="dates">2026.10.02 (Fri) ~ 10.11 (Sun) / 10 Days</div>
+</div>
+
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-tab="schedule">일정</button>
+  <button class="tab-btn" data-tab="accommodation">숙소</button>
+  <button class="tab-btn" data-tab="transport">교통</button>
+  <button class="tab-btn" data-tab="booking">예약</button>
+  <button class="tab-btn" data-tab="souvenir">기념품</button>
+</nav>
+
+<!-- ========== 일정 탭 ========== -->
+<div class="section active" id="schedule">
+
+  <!-- Day 1: 10/2 (금) -->
+  <div class="day-card border-transit" id="day1">
+    <div class="day-header" onclick="toggleDay('day1')">
+      <div class="day-badge c-transit">
+        <span class="num">2</span><span class="dow">FRI</span>
+      </div>
+      <div class="day-info">
+        <div class="title">인천 출발</div>
+        <div class="city">Day 1 · 인천 → 이스탄불</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">12:50</div>
+          <div class="tl-detail">
+            <div class="tl-title">공항버스 탑승 (엄마, 이모)</div>
+            <div class="tl-sub">약 4시간 35분 소요</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">17:30</div>
+          <div class="tl-detail">
+            <div class="tl-title">인천공항 T1 도착 (엄마, 이모)</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">20:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">인천공항 출국 수속</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Incheon+International+Airport+Terminal+1" target="_blank"><span class="chip-icon">📍</span> 인천공항 T1</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">23:20</div>
+          <div class="tl-detail">
+            <div class="tl-title">인천 출발 (이스탄불행)</div>
+            <div class="tl-sub">터키항공</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 2: 10/3 (토) -->
+  <div class="day-card border-porto" id="day2">
+    <div class="day-header" onclick="toggleDay('day2')">
+      <div class="day-badge c-porto">
+        <span class="num">3</span><span class="dow">SAT</span>
+      </div>
+      <div class="day-info">
+        <div class="title">포르투 도착</div>
+        <div class="city">Day 2 · 이스탄불 경유 → 포르투</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">05:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">이스탄불 도착</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">06:50</div>
+          <div class="tl-detail">
+            <div class="tl-title">이스탄불 출발 (포르투행)</div>
+            <div class="tl-sub">터키항공 환승</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">09:45</div>
+          <div class="tl-detail">
+            <div class="tl-title">포르투 도착</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Francisco+Sa+Carneiro+Airport+Porto" target="_blank"><span class="chip-icon">📍</span> 포르투 공항</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">10:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">숙소로 이동 (택시, 16km)</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">숙소 체크인 & 짐 정리</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Rua+de+Fernandes+Tomas+424+Porto+4000-210" target="_blank"><span class="chip-icon">📍</span> 숙소 위치</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">16:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">주변 구경</div>
+            <div class="tl-sub">포르투 시내 산책</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 3: 10/4 (일) -->
+  <div class="day-card border-porto" id="day3">
+    <div class="day-header" onclick="toggleDay('day3')">
+      <div class="day-badge c-porto">
+        <span class="num">4</span><span class="dow">SUN</span>
+      </div>
+      <div class="day-info">
+        <div class="title">포르투 투어</div>
+        <div class="city">Day 3 · 렐루 서점 / 와이너리 / 스냅 촬영</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">09:45</div>
+          <div class="tl-detail">
+            <div class="tl-title">렐루 서점 입장</div>
+            <div class="tl-sub">예약번호: 107801894</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Livraria+Lello+Porto" target="_blank"><span class="chip-icon">📍</span> 렐루 서점</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">14:15</div>
+          <div class="tl-detail">
+            <div class="tl-title">코우번즈 와이너리 투어 시작</div>
+            <div class="tl-sub">루비 2잔, 화이트 2잔 / 현장 추가 결제 120유로 (1인당 30유로)</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Cockburn's+Port+Lodge+Vila+Nova+de+Gaia" target="_blank"><span class="chip-icon">📍</span> 와이너리</a>
+              <a class="chip chip-link" href="https://experiences.myrealtrip.com/products/5701684" target="_blank"><span class="chip-icon">🔗</span> 예약 상세</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">16:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">와이너리 투어 종료</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">18:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">스냅 촬영 (예정)</div>
+            <div class="tl-sub">10월 초 일몰 약 19:10 전후</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 4: 10/5 (월) -->
+  <div class="day-card border-porto" id="day4">
+    <div class="day-header" onclick="toggleDay('day4')">
+      <div class="day-badge" style="background:linear-gradient(135deg, var(--porto), var(--madrid))">
+        <span class="num">5</span><span class="dow">MON</span>
+      </div>
+      <div class="day-info">
+        <div class="title">포르투 → 마드리드</div>
+        <div class="city">Day 4 · 시내 관광 후 야간버스 이동</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">10:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">체크아웃 & 짐보관</div>
+            <div class="tl-sub">시내 구경, 기념품 구입</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">22:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">캄파냐역 출발 (ALSA 야간버스)</div>
+            <div class="tl-sub">예약번호: 1g3gucp / 버스 3519 / 약 8시간 소요</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Estação+de+Campanhã+Porto" target="_blank"><span class="chip-icon">📍</span> 캄파냐역</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 5: 10/6 (화) -->
+  <div class="day-card border-madrid" id="day5">
+    <div class="day-header" onclick="toggleDay('day5')">
+      <div class="day-badge c-madrid">
+        <span class="num">6</span><span class="dow">TUE</span>
+      </div>
+      <div class="day-info">
+        <div class="title">마드리드 도착</div>
+        <div class="city">Day 5 · 축구장 투어 (예정)</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">06:29</div>
+          <div class="tl-detail">
+            <div class="tl-title">마드리드 남부터미널 도착</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Estación+Sur+de+Autobuses+Madrid" target="_blank"><span class="chip-icon">📍</span> 남부터미널</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">10:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">축구장 투어 (예정)</div>
+            <div class="tl-sub">산티아고 베르나베우 or 완다 메트로폴리타노</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Santiago+Bernabeu+Stadium+Madrid" target="_blank"><span class="chip-icon">📍</span> 베르나베우</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">숙소 체크인</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Calle+de+Doña+Mencia+43+28011+Madrid" target="_blank"><span class="chip-icon">📍</span> 숙소 위치</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">16:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">주변 구경</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 6: 10/7 (수) -->
+  <div class="day-card border-madrid" id="day6">
+    <div class="day-header" onclick="toggleDay('day6')">
+      <div class="day-badge c-madrid">
+        <span class="num">7</span><span class="dow">WED</span>
+      </div>
+      <div class="day-info">
+        <div class="title">마드리드 투어</div>
+        <div class="city">Day 6 · 프라도 미술관 / 마드리드 왕궁</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">10:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">프라도 미술관 투어</div>
+            <div class="tl-sub">마이리얼트립 투어 / 입장료 현장 구매</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Museo+del+Prado+Madrid" target="_blank"><span class="chip-icon">📍</span> 프라도 미술관</a>
+              <a class="chip chip-link" href="https://experiences.myrealtrip.com/products/3421542" target="_blank"><span class="chip-icon">🔗</span> 투어 상세</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">마드리드 왕궁 관람</div>
+            <div class="tl-sub">트립닷컴 사전예약 완료</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Palacio+Real+de+Madrid" target="_blank"><span class="chip-icon">📍</span> 마드리드 왕궁</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 7: 10/8 (목) -->
+  <div class="day-card border-transit" id="day7">
+    <div class="day-header" onclick="toggleDay('day7')">
+      <div class="day-badge" style="background:linear-gradient(135deg, var(--madrid), var(--barcelona))">
+        <span class="num">8</span><span class="dow">THU</span>
+      </div>
+      <div class="day-info">
+        <div class="title">마드리드 → 바르셀로나</div>
+        <div class="city">Day 7 · iryo 고속열차 이동</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">06:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">아토차역으로 이동 (우버)</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Estación+de+Atocha+Madrid" target="_blank"><span class="chip-icon">📍</span> 아토차역</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">07:22</div>
+          <div class="tl-detail">
+            <div class="tl-title">아토차역 → 바르셀로나 산츠역</div>
+            <div class="tl-sub">iryo 열차 / 예약번호: CLL3P5 / 약 3시간 소요</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">10:24</div>
+          <div class="tl-detail">
+            <div class="tl-title">바르셀로나 산츠역 도착</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Estació+de+Barcelona+Sants" target="_blank"><span class="chip-icon">📍</span> 산츠역</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">11:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">식사</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">숙소 체크인</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Carrer+de+Calvet+17+Barcelona+08021" target="_blank"><span class="chip-icon">📍</span> 숙소 위치</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 8: 10/9 (금) -->
+  <div class="day-card border-barcelona" id="day8">
+    <div class="day-header" onclick="toggleDay('day8')">
+      <div class="day-badge c-barcelona">
+        <span class="num">9</span><span class="dow">FRI</span>
+      </div>
+      <div class="day-info">
+        <div class="title">바르셀로나 투어</div>
+        <div class="city">Day 8 · 가우디 투어 / 사그라다 파밀리아</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">07:30</div>
+          <div class="tl-detail">
+            <div class="tl-title">가우디 건축물 투어 시작</div>
+            <div class="tl-sub">까사밀라(내/외부) → 까사 바트요(내/외부) → 구엘 공원(내부, 자유)</div>
+            <div class="tl-sub">현장 추가 결제 284유로 (1인당 71유로)</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Casa+Milà+La+Pedrera+Barcelona" target="_blank"><span class="chip-icon">📍</span> 까사밀라</a>
+              <a class="chip chip-map" href="https://maps.google.com/?q=Casa+Batlló+Barcelona" target="_blank"><span class="chip-icon">📍</span> 까사 바트요</a>
+              <a class="chip chip-map" href="https://maps.google.com/?q=Park+Güell+Barcelona" target="_blank"><span class="chip-icon">📍</span> 구엘 공원</a>
+              <a class="chip chip-link" href="https://experiences.myrealtrip.com/products/3516980" target="_blank"><span class="chip-icon">🔗</span> 투어 상세</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">13:40</div>
+          <div class="tl-detail">
+            <div class="tl-title">가우디 투어 종료</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">14:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">사그라다 파밀리아 입장</div>
+            <div class="tl-sub">바실리스크 입장 + 패션 타워 (14:15)</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Sagrada+Familia+Barcelona" target="_blank"><span class="chip-icon">📍</span> 사그라다 파밀리아</a>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">19:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">저녁 식사</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 9: 10/10 (토) -->
+  <div class="day-card border-barcelona" id="day9">
+    <div class="day-header" onclick="toggleDay('day9')">
+      <div class="day-badge c-barcelona">
+        <span class="num">10</span><span class="dow">SAT</span>
+      </div>
+      <div class="day-info">
+        <div class="title">바르셀로나 출발</div>
+        <div class="city">Day 9 · 자유시간 후 공항으로</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">10:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">체크아웃 & 짐보관</div>
+            <div class="tl-sub">시내 구경, 기념품 구입</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">21:00</div>
+          <div class="tl-detail">
+            <div class="tl-title">바르셀로나 출발</div>
+            <div class="tl-sub">티웨이항공 직항 (인천행)</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Barcelona+El+Prat+Airport" target="_blank"><span class="chip-icon">📍</span> 바르셀로나 공항</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 10: 10/11 (일) -->
+  <div class="day-card border-transit" id="day10">
+    <div class="day-header" onclick="toggleDay('day10')">
+      <div class="day-badge c-transit">
+        <span class="num">11</span><span class="dow">SUN</span>
+      </div>
+      <div class="day-info">
+        <div class="title">인천 도착</div>
+        <div class="city">Day 10 · 귀국</div>
+      </div>
+      <span class="day-toggle">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="tl-item">
+          <div class="tl-time">16:25</div>
+          <div class="tl-detail">
+            <div class="tl-title">인천공항 도착</div>
+            <div class="chips">
+              <a class="chip chip-map" href="https://maps.google.com/?q=Incheon+International+Airport" target="_blank"><span class="chip-icon">📍</span> 인천공항</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== 숙소 탭 ========== -->
+<div class="section" id="accommodation">
+  <div class="section-title">숙소 정보</div>
+
+  <div class="accom-card">
+    <span class="accom-city c-porto">포르투</span>
+    <div class="accom-name">포르투 숙소 (아고다)</div>
+    <div class="accom-addr">Rua de Fernandes Tomas, 424, Porto 4000-210</div>
+    <div class="accom-meta">
+      <span>10/3 ~ 10/5 (2박)</span>
+      <span>예약번호: 1750059752</span>
+    </div>
+    <div class="chips" style="margin-top:10px;">
+      <a class="chip chip-map" href="https://maps.google.com/?q=Rua+de+Fernandes+Tomas+424+Porto+4000-210" target="_blank"><span class="chip-icon">📍</span> 지도 보기</a>
+    </div>
+  </div>
+
+  <div class="accom-card">
+    <span class="accom-city c-madrid">마드리드</span>
+    <div class="accom-name">마드리드 숙소 (에어비앤비)</div>
+    <div class="accom-addr">Calle de Doña Mencia, 43, 28011 Madrid</div>
+    <div class="accom-meta">
+      <span>10/6 ~ 10/8 (2박)</span>
+      <span>예약번호: HMEETZ2MTH</span>
+    </div>
+    <div class="chips" style="margin-top:10px;">
+      <a class="chip chip-map" href="https://maps.google.com/?q=Calle+de+Doña+Mencia+43+28011+Madrid" target="_blank"><span class="chip-icon">📍</span> 지도 보기</a>
+    </div>
+  </div>
+
+  <div class="accom-card">
+    <span class="accom-city c-barcelona">바르셀로나</span>
+    <div class="accom-name">바르셀로나 숙소 (에어비앤비)</div>
+    <div class="accom-addr">Carrer de Calvet, 17, Barcelona, Catalunya 08021</div>
+    <div class="accom-meta">
+      <span>10/8 ~ 10/10 (2박)</span>
+      <span>예약번호: HMQ2SWWCPN</span>
+    </div>
+    <div class="chips" style="margin-top:10px;">
+      <a class="chip chip-map" href="https://maps.google.com/?q=Carrer+de+Calvet+17+Barcelona+08021" target="_blank"><span class="chip-icon">📍</span> 지도 보기</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 교통 탭 ========== -->
+<div class="section" id="transport">
+  <div class="section-title">교통 정보</div>
+
+  <div class="transport-card">
+    <div class="transport-route">
+      <span class="transport-city-label">인천</span>
+      <span class="transport-arrow">→</span>
+      <span class="transport-city-label">이스탄불</span>
+      <span class="transport-arrow">→</span>
+      <span class="transport-city-label">포르투</span>
+    </div>
+    <div class="transport-detail">
+      <strong>터키항공</strong> (경유)<br>
+      10/2(금) 23:20 인천 출발<br>
+      10/3(토) 05:00 이스탄불 도착<br>
+      10/3(토) 06:50 이스탄불 출발<br>
+      10/3(토) 09:45 포르투 도착
+    </div>
+  </div>
+
+  <div class="transport-card">
+    <div class="transport-route">
+      <span class="transport-city-label">포르투</span>
+      <span class="transport-arrow">→</span>
+      <span class="transport-city-label">마드리드</span>
+    </div>
+    <div class="transport-detail">
+      <strong>ALSA 야간버스</strong> / 약 8시간<br>
+      10/5(월) 22:00 캄파냐역 출발<br>
+      10/6(화) 06:29 마드리드 남부터미널 도착<br>
+      예약번호: <strong>1g3gucp</strong> / 버스 3519
+    </div>
+    <div class="chips" style="margin-top:10px;">
+      <a class="chip chip-map" href="https://maps.google.com/?q=Estação+de+Campanhã+Porto" target="_blank"><span class="chip-icon">📍</span> 캄파냐역</a>
+      <a class="chip chip-map" href="https://maps.google.com/?q=Estación+Sur+de+Autobuses+Madrid" target="_blank"><span class="chip-icon">📍</span> 남부터미널</a>
+    </div>
+  </div>
+
+  <div class="transport-card">
+    <div class="transport-route">
+      <span class="transport-city-label">마드리드</span>
+      <span class="transport-arrow">→</span>
+      <span class="transport-city-label">바르셀로나</span>
+    </div>
+    <div class="transport-detail">
+      <strong>iryo 고속열차</strong> / 약 3시간<br>
+      10/8(목) 07:22 아토차역 출발<br>
+      10/8(목) 10:24 산츠역 도착<br>
+      예약번호: <strong>CLL3P5</strong>
+    </div>
+    <div class="chips" style="margin-top:10px;">
+      <a class="chip chip-map" href="https://maps.google.com/?q=Estación+de+Atocha+Madrid" target="_blank"><span class="chip-icon">📍</span> 아토차역</a>
+      <a class="chip chip-map" href="https://maps.google.com/?q=Estació+de+Barcelona+Sants" target="_blank"><span class="chip-icon">📍</span> 산츠역</a>
+    </div>
+  </div>
+
+  <div class="transport-card">
+    <div class="transport-route">
+      <span class="transport-city-label">바르셀로나</span>
+      <span class="transport-arrow">→</span>
+      <span class="transport-city-label">인천</span>
+    </div>
+    <div class="transport-detail">
+      <strong>티웨이항공</strong> (직항)<br>
+      10/10(토) 21:00 바르셀로나 출발<br>
+      10/11(일) 16:25 인천 도착
+    </div>
+    <div class="chips" style="margin-top:10px;">
+      <a class="chip chip-map" href="https://maps.google.com/?q=Barcelona+El+Prat+Airport" target="_blank"><span class="chip-icon">📍</span> 바르셀로나 공항</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 예약 탭 ========== -->
+<div class="section" id="booking">
+  <div class="section-title">예약 현황</div>
+
+  <div class="check-card">
+    <!-- 항공 -->
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">항공편 (인천 → 포르투)</div>
+        <div class="check-meta">터키항공, 이스탄불 경유 · 10/2 출발</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">항공편 (바르셀로나 → 인천)</div>
+        <div class="check-meta">티웨이항공, 직항 · 10/10 출발</div>
+      </div>
+    </div>
+
+    <!-- 숙소 -->
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">포르투 숙소 (2박)</div>
+        <div class="check-meta">아고다 #1750059752 · 10/3~10/5</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Rua+de+Fernandes+Tomas+424+Porto+4000-210" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">마드리드 숙소 (2박)</div>
+        <div class="check-meta">에어비앤비 HMEETZ2MTH · 10/6~10/8</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Calle+de+Doña+Mencia+43+28011+Madrid" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">바르셀로나 숙소 (2박)</div>
+        <div class="check-meta">에어비앤비 HMQ2SWWCPN · 10/8~10/10</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Carrer+de+Calvet+17+Barcelona+08021" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 교통 -->
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">포르투 → 마드리드 버스</div>
+        <div class="check-meta">ALSA #1g3gucp · 10/5 22:00</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">마드리드 → 바르셀로나 열차</div>
+        <div class="check-meta">iryo #CLL3P5 · 10/8 07:22</div>
+      </div>
+    </div>
+
+    <!-- 관광/티켓 -->
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">렐루 서점</div>
+        <div class="check-meta">예약번호 107801894 · 10/4</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Livraria+Lello+Porto" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">코우번즈 와이너리 투어</div>
+        <div class="check-meta">마이리얼트립 · 10/4 · 현장 120유로 추가</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Cockburn's+Port+Lodge+Vila+Nova+de+Gaia" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+          <a class="chip chip-link" href="https://experiences.myrealtrip.com/products/5701684" target="_blank"><span class="chip-icon">🔗</span> 예약</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">포르투 스냅 촬영</div>
+        <div class="check-meta">10/4 일몰 (약 19:10)</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-pending">!</div>
+      <div class="check-info">
+        <div class="check-name">축구장 투어</div>
+        <div class="check-meta">10/6 · 미확정</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Santiago+Bernabeu+Stadium+Madrid" target="_blank"><span class="chip-icon">📍</span> 베르나베우</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">프라도 미술관 투어</div>
+        <div class="check-meta">마이리얼트립 · 10/7 · 입장료 현장 구매</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Museo+del+Prado+Madrid" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+          <a class="chip chip-link" href="https://experiences.myrealtrip.com/products/3421542" target="_blank"><span class="chip-icon">🔗</span> 투어</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">마드리드 왕궁 입장권</div>
+        <div class="check-meta">트립닷컴 · 10/7 15:00</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Palacio+Real+de+Madrid" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-pending">!</div>
+      <div class="check-info">
+        <div class="check-name">플라멩고 공연</div>
+        <div class="check-meta">미정</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">가우디 투어</div>
+        <div class="check-meta">마이리얼트립 · 10/9 · 현장 284유로 추가</div>
+        <div class="chips">
+          <a class="chip chip-link" href="https://experiences.myrealtrip.com/products/3516980" target="_blank"><span class="chip-icon">🔗</span> 투어</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">사그라다 파밀리아 + 타워</div>
+        <div class="check-meta">공식 홈페이지 · 10/9 14:00</div>
+        <div class="chips">
+          <a class="chip chip-map" href="https://maps.google.com/?q=Sagrada+Familia+Barcelona" target="_blank"><span class="chip-icon">📍</span> 위치</a>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">여행자 보험</div>
+        <div class="check-meta">카카오손해보험 · 10/2~10/11</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-status status-done">&#10003;</div>
+      <div class="check-info">
+        <div class="check-name">이심 (eSIM)</div>
+        <div class="check-meta">10/3~10/10 (8일) · 예약 완료</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 기념품 탭 ========== -->
+<div class="section" id="souvenir">
+  <div class="section-title">기념품 리스트</div>
+
+  <div class="souv-card">
+    <span class="accom-city c-barcelona" style="margin-bottom:10px">바르셀로나</span>
+    <div class="souv-name">라치나타 (La Chinata)</div>
+    <div class="souv-desc">올리브 오일, 올리브 오일 함유 화장품류 저렴하게 판매</div>
+    <div class="chips" style="margin-top:10px">
+      <a class="chip chip-map" href="https://maps.google.com/?q=La+Chinata+Barcelona" target="_blank"><span class="chip-icon">📍</span> 매장 위치</a>
+      <a class="chip chip-link" href="https://blog.naver.com/tabo4515/224398015304" target="_blank"><span class="chip-icon">🔗</span> 후기 블로그</a>
+    </div>
+  </div>
+
+  <div class="souv-card">
+    <span class="accom-city c-porto" style="margin-bottom:10px">포르투</span>
+    <div class="souv-name">자크폰 크림 (약국)</div>
+    <div class="souv-desc">목 주름에 좋다고 유명한 크림</div>
+    <div class="chips" style="margin-top:10px">
+      <a class="chip chip-link" href="https://blog.naver.com/dntkal1104/223932052736" target="_blank"><span class="chip-icon">🔗</span> 후기 블로그</a>
+    </div>
+  </div>
+
+  <div class="souv-card">
+    <span class="accom-city c-porto" style="margin-bottom:10px">포르투</span>
+    <div class="souv-name">베나모르 (Benamor)</div>
+    <div class="souv-desc">여러 가지 향의 핸드크림이 유명</div>
+    <div class="chips" style="margin-top:10px">
+      <a class="chip chip-map" href="https://maps.google.com/?q=Benamor+Porto" target="_blank"><span class="chip-icon">📍</span> 매장 위치</a>
+      <a class="chip chip-link" href="https://blog.naver.com/dntkal1104/223932052736" target="_blank"><span class="chip-icon">🔗</span> 후기 블로그</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Day card toggle
+function toggleDay(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// Auto-open today's day card (or first one)
+(function() {
+  const today = new Date();
+  const m = today.getMonth() + 1;
+  const d = today.getDate();
+  const y = today.getFullYear();
+  const dayMap = {2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:7, 9:8, 10:9, 11:10};
+  if (y === 2026 && m === 10 && dayMap[d]) {
+    document.getElementById('day' + dayMap[d]).classList.add('open');
+  } else {
+    document.getElementById('day1').classList.add('open');
+  }
+})();
+</script>
+
+</body>
+</html>

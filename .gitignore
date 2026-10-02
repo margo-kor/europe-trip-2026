@@ -1,0 +1,7 @@
+# 개인 예약 문서 (PDF, 이미지)
+예약/
+일정/*.jpg
+
+# OS
+Thumbs.db
+.DS_Store
