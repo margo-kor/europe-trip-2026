@@ -29,26 +29,25 @@ jobs:
           body = os.environ.get("ISSUE_BODY", "")
           request_text = f"{title}\n{body}".strip()
 
-          prompt = f"""아래는 여행 일정 웹페이지의 전체 HTML입니다.
-          사용자의 수정 요청에 따라 HTML을 수정해주세요.
-
-          ## 수정 요청
-          {request_text}
-
-          ## 현재 HTML
-          {html}
-
-          ## 규칙
-          - 수정된 전체 HTML만 출력하세요
-          - <!DOCTYPE html>부터 </html>까지만 출력
-          - 설명이나 마크다운 코드블록 없이 순수 HTML만
-          - 기존 디자인, 스타일, 구조를 그대로 유지
-          - 구글맵 링크는 https://maps.google.com/?q= 형식
-          - 예약 링크가 있으면 chip-link 클래스로 추가
-          - 한국어로 작성"""
+          prompt = (
+              "아래는 여행 일정 웹페이지의 전체 HTML입니다.\n"
+              "사용자의 수정 요청에 따라 HTML을 수정해주세요.\n\n"
+              "## 수정 요청\n"
+              f"{request_text}\n\n"
+              "## 현재 HTML\n"
+              f"{html}\n\n"
+              "## 규칙\n"
+              "- 수정된 전체 HTML만 출력하세요\n"
+              "- <!DOCTYPE html>부터 </html>까지만 출력\n"
+              "- 설명이나 마크다운 코드블록 없이 순수 HTML만\n"
+              "- 기존 디자인, 스타일, 구조를 그대로 유지\n"
+              "- 구글맵 링크는 https://maps.google.com/?q= 형식\n"
+              "- 예약 링크가 있으면 chip-link 클래스로 추가\n"
+              "- 한국어로 작성"
+          )
 
           payload = json.dumps({
-              "model": "claude-sonnet-4-6",
+              "model": "claude-sonnet-4-20250514",
               "max_tokens": 20000,
               "messages": [{"role": "user", "content": prompt}]
           }).encode()
@@ -66,8 +65,9 @@ jobs:
           try:
               with urllib.request.urlopen(req, timeout=120) as resp:
                   data = json.loads(resp.read())
-          except Exception as e:
-              print(f"API error: {e}", file=sys.stderr)
+          except urllib.error.HTTPError as e:
+              err_body = e.read().decode()
+              print(f"API error {e.code}: {err_body}", file=sys.stderr)
               sys.exit(1)
 
           new_html = data["content"][0]["text"]
